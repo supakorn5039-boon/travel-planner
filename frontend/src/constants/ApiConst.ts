@@ -1,0 +1,7 @@
+export const API_ROUTES = {
+    LOGIN: '/api/auth/login',
+    REGISTER: '/api/auth/register',
+    DASHBOARD: '/api/dashboard',
+    PRODUCT: '/api/product',
+    STOCK: '/api/stock',
+};
