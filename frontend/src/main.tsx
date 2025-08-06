@@ -11,11 +11,9 @@ import './tailwind.css';
 import { RouterProvider } from 'react-router-dom';
 import router from './router/index';
 
-// Redux
+// TanStack
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Provider } from 'react-redux';
 import { ToastifyContainer } from './components/Toast/Toast';
-import store from './store/index';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -30,12 +28,10 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <Suspense fallback={<div className="text-center p-8">Loading...</div>}>
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <ToastifyContainer />
-                    <RouterProvider router={router} />
-                </QueryClientProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <ToastifyContainer />
+                <RouterProvider router={router} future={{ v7_startTransition: true }} />
+            </QueryClientProvider>
         </Suspense>
     </React.StrictMode>
 );

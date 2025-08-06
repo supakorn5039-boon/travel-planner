@@ -13,7 +13,7 @@ jobs:
 
       services:
          postgres:
-            image: postgres:16
+            image: postgres:17.5-alpine3.21
             env:
                POSTGRES_USER: username
                POSTGRES_PASSWORD: password
@@ -27,7 +27,7 @@ jobs:
                --health-retries 5
 
       env:
-         DB_DSN: host=localhost user=username password=password dbname=travel port=5433 sslmode=disable
+         DB_DSN: host=localhost user=username password=password dbname=travel port=5432 sslmode=disable
 
       defaults:
          run:
