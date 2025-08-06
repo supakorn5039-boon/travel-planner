@@ -5,11 +5,19 @@ export interface IconProps {
     className?: string;
 }
 
-export interface TypeRoutes {
+export type TypeRoutes = {
     path: string;
     element: JSX.Element;
-    layout: string;
-}
+    layout?: 'default' | 'blank';
+    children?: TypeRoutes[];
+    allowedRoles?: string | string[];
+    permission?: string;
+    meta?: {
+        title?: string;
+        icon?: ReactElement;
+        hidden?: boolean;
+    };
+};
 
 export interface IMenuSideBarProps {
     group_id: number;
