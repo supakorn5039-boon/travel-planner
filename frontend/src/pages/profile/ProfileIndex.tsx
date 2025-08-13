@@ -1,5 +1,5 @@
 import { SpinnerLoadingPulse } from '@/components/Loading/SpinLoading';
-import { ProfileService } from '@/services/profile.Service';
+import { ProfileService } from '@/services/Profile.service';
 import { formatDate } from '@/utils/format';
 import { useQuery } from '@tanstack/react-query';
 import { FaPlaneDeparture } from 'react-icons/fa';
@@ -20,9 +20,7 @@ export default function ProfileIndex() {
                 <div className="relative px-6 pb-6">
                     <div className="mt-8">
                         <h2 className="text-2xl font-bold capitalize text-white">{data.username}</h2>
-                        <span className="mt-2 inline-block px-3 py-1 bg-blue-100 text-blue-600 text-sm rounded-full capitalize">
-                            {data.role}
-                        </span>
+                        <span className="mt-2 inline-block px-3 py-1 bg-blue-100 text-blue-600 text-sm rounded-full capitalize">{data.role}</span>
                     </div>
                     <div className="mt-6 grid grid-cols-2 gap-4 text-center">
                         <div className="bg-gray-100 rounded-xl p-4">
