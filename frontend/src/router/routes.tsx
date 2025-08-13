@@ -1,24 +1,31 @@
 import { ROUTES } from '@/constants/RouteConst';
-import Register from '@/pages/auth/register/Register';
 
 import type { TypeRoutes } from '@/types/Components';
 import { lazy } from 'react';
 
-const Index = lazy(() => import('../pages/Index'));
 const Login = lazy(() => import('@/pages/auth/login/Login'));
+const Register = lazy(() => import('@/pages/auth/register/Register'));
+
+const HomeIndex = lazy(() => import('@/pages/home/HomeIndex'));
+const ProfileIndex = lazy(() => import('@/pages/profile/ProfileIndex'));
 
 const DashboardIndex = lazy(() => import('@/pages/dashboard/DashboardIndex'));
 
 const privateRoutes: TypeRoutes[] = [
     {
-        path: '/',
-        element: <Index />,
+        path: ROUTES.HOME,
+        element: <HomeIndex />,
         layout: 'default',
     },
 
     {
         path: ROUTES.DASHBOARD,
         element: <DashboardIndex />,
+        layout: 'default',
+    },
+    {
+        path: ROUTES.PROFILE,
+        element: <ProfileIndex />,
         layout: 'default',
     },
 ];

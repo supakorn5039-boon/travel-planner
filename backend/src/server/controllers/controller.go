@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"travel/backend/src/server/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +19,7 @@ func Routes(r *gin.Engine) {
 		{
 			auth.POST("/login", Login)
 			auth.POST("/register", Register)
+			auth.GET("/profile", middleware.Protected(), Getprofile)
 		}
 	}
 

@@ -13,7 +13,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
                     <div className={`flex flex-col min-h-screen `}>
                         <Header />
                         <Suspense>
-                            <div className={` p-6 animate__animated`}>{children}</div>
+                            <div className={`py-10`}>{children}</div>
                         </Suspense>
                         <Footer />
                         <Portals />

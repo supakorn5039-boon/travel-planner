@@ -1,88 +1,79 @@
+import { ROUTES } from '@/constants/RouteConst';
+import { useUserStore } from '@/store/features/user/useUserStore';
 import { useEffect } from 'react';
 import { CiLogout } from 'react-icons/ci';
 import { Link, useLocation } from 'react-router-dom';
 import Dropdown from '../Dropdown';
 
-import { ROUTES } from '@/constants/RouteConst';
-import { MockUserHeader } from '@/mocks/User';
-
 const Header = () => {
     const location = useLocation();
 
+    const { username, role } = useUserStore();
+
     useEffect(() => {
-        const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location.pathname + '"]');
+        const selector = document.querySelector('ul.nav-links a[href="' + window.location.pathname + '"]');
         if (selector) {
+            document.querySelectorAll('ul.nav-links .active').forEach((el) => el.classList.remove('active'));
             selector.classList.add('active');
-            const all: any = document.querySelectorAll('ul.horizontal-menu .nav-link.active');
-            for (let i = 0; i < all.length; i++) {
-                all[0]?.classList.remove('active');
-            }
-            const ul: any = selector.closest('ul.sub-menu');
-            if (ul) {
-                let ele: any = ul.closest('li.menu').querySelectorAll('.nav-link');
-                if (ele) {
-                    ele = ele[0];
-                    setTimeout(() => {
-                        ele?.classList.add('active');
-                    });
-                }
-            }
         }
     }, [location]);
 
+    const navItems = [
+        { label: 'Home', path: '/' },
+        { label: 'Destinations', path: '/destinations' },
+        { label: 'Trips', path: '/trips' },
+        { label: 'About', path: '/about' },
+    ];
+
     return (
-        <header className={`z-40`}>
-            <div>
-                <div className="relative bg-white flex w-full items-center px-5 py-2.5">
-                    <div className="flex space-x-4 items-center ltr:mr-2 rtl:ml-2">
-                        <p className="text-base font-semibold">Title Header</p>
-                    </div>
-                    <div className="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse">
-                        <div className="sm:ltr:mr-auto sm:rtl:ml-auto" />
+        <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-lg shadow-sm">
+            <div className="container mx-auto flex items-center justify-between px-6 py-4">
+                {/* Logo */}
+                <Link to="/" className="flex items-center space-x-2">
+                    <img src="/logo.png" alt="Travel Logo" className="w-10 h-10 object-contain" />
+                    <span className="font-bold text-xl text-gray-900 tracking-wide">TravelMate</span>
+                </Link>
 
-                        <div className="flex flex-col pr-[1rem]">
-                            <p className="font-semibold">{MockUserHeader.username}</p>
-                            <p className="flex justify-end text-gray-60">{MockUserHeader.role}</p>
-                        </div>
-                        <div className="dropdown shrink-0 flex">
-                            <Dropdown
-                                offset={[0, 8]}
-                                btnClassName="relative group block"
-                                button={
-                                    <img
-                                        className="size-9 rounded-full object-cover saturate-50 group-hover:saturate-100"
-                                        src="/assets/images/profile-34.jpeg"
-                                        alt="userProfile"
-                                    />
-                                }
-                            >
-                                <ul className="text-dark !py-0 w-[230px] font-semibold ">
-                                    <li>
-                                        <div className="flex items-center px-4 py-4">
-                                            <img
-                                                className="rounded-md size-10 object-cover"
-                                                src="/assets/images/profile-34.jpeg"
-                                                alt="userProfile"
-                                            />
-                                            <div className="ltr:pl-4 rtl:pr-4 truncate">
-                                                <h4 className="text-base">John Doe</h4>
-                                                <button type="button" className="text-black/60 hover:text-primary ">
-                                                    johndoe@gmail.com
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </li>
+                {/* Navigation */}
+                <ul className="hidden md:flex nav-links space-x-8 font-medium">
+                    {navItems.map((item) => (
+                        <li key={item.path}>
+                            <Link to={item.path} className="relative text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                                {item.label}
+                                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-600 transition-all duration-300 hover:w-full"></span>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
 
-                                    <li className="border-t border-white-light">
-                                        <Link to={ROUTES.LOGIN} className="text-danger !py-3">
-                                            <CiLogout className="size-5 ltr:mr-2 rtl:ml-2 shrink-0" />
-                                            Sign Out
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </Dropdown>
-                        </div>
+                {/* User Profile */}
+                <div className="flex items-center space-x-4">
+                    <div className="text-right hidden sm:block">
+                        <p className="font-semibold capitalize">{username}</p>
+                        <p className="text-sm text-gray-500 capitalize">{role}</p>
                     </div>
+                    <Dropdown
+                        offset={[0, 8]}
+                        btnClassName="relative group block"
+                        button={
+                            <img
+                                className="w-10 h-10 rounded-full object-cover border-2 border-blue-500 shadow-md"
+                                src="/assets/images/profile-34.jpeg"
+                                alt="userProfile"
+                            />
+                        }
+                    >
+                        <ul className="text-dark py-2 flex flex-col items-center justify-center w-[160px] font-semibold bg-white rounded-lg shadow-lg">
+                            <Link to={ROUTES.PROFILE} className="flex items-center py-3 text-black">
+                                Profile
+                            </Link>
+
+                            <Link to={ROUTES.LOGIN} className="flex items-center py-3 text-red-500">
+                                <CiLogout className="size-4 mr-2" />
+                                Sign Out
+                            </Link>
+                        </ul>
+                    </Dropdown>
                 </div>
             </div>
         </header>

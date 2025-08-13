@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
 )
@@ -12,7 +14,9 @@ type Claims struct {
 
 type User struct {
 	gorm.Model
-	Role     string `gorm:"not null"`
-	Username string `gorm:"not null"`
-	Password string `gorm:"not null"`
+	Role      string `gorm:"not null"`
+	Username  string `gorm:"not null"`
+	Password  string `gorm:"not null"`
+	CreatedAt time.Time
+	Trip      int `gorm:"not null"`
 }

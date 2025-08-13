@@ -47,7 +47,10 @@
             ],
             "@mocks/*": [
                 "src/mocks/*"
-            ]
+            ],
+            "@services/*": [
+                "src/services/*"
+            ],
         }
     },
     "include": [

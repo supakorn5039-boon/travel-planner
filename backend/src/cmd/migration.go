@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 	"travel/backend/src/config"
 	"travel/backend/src/models"
 	"travel/backend/src/security"
@@ -49,9 +50,11 @@ func main() {
 
 	mockUpUser := []models.User{
 		{
-			Username: "admin",
-			Password: hashedPassword,
-			Role:     "admin",
+			Username:  "admin",
+			Password:  hashedPassword,
+			Role:      "admin",
+			CreatedAt: time.Time{},
+			Trip:      0,
 		},
 	}
 
