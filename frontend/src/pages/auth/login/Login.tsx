@@ -3,7 +3,7 @@ import IconTicket from '@/components/Icon/IconTicket';
 import FormInputField from '@/components/Input/FormInputField';
 import { showErrorToast, showSuccessToast } from '@/components/Toast/Toast';
 import { ROUTES } from '@/constants/RouteConst';
-import { CredentialService } from '@/services/Credential.service';
+import { CredentialService } from '@/services/CredentialService';
 import { useUserStore } from '@/store/features/user/useUserStore';
 import type { CredentialProps } from '@/types/Credential';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

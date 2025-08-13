@@ -1,5 +1,5 @@
 import { SpinnerLoadingPulse } from '@/components/Loading/SpinLoading';
-import { ProfileService } from '@/services/Profile.service';
+import { ProfileService } from '@/services/ProfileService';
 import { formatDate } from '@/utils/format';
 import { useQuery } from '@tanstack/react-query';
 import { FaPlaneDeparture } from 'react-icons/fa';
