@@ -1,6 +1,7 @@
 package security
 
 import (
+	"errors"
 	"fmt"
 	"time"
 	"travel/backend/src/models"
@@ -50,5 +51,28 @@ func ValidateToken(tokenStr string) (*models.Claims, error) {
 	}
 
 	return claims, nil
+
+}
+
+func ParseJWT(tokenStr string) (uint, error) {
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+
+	if err != nil || !token.Valid {
+		return 0, errors.New("invalid token")
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok {
+		return 0, errors.New("invalid token")
+	}
+
+	userId, ok := claims["id"].(float64)
+	if !ok {
+		return 0, errors.New("invalid User Id in token")
+	}
+
+	return uint(userId), nil
 
 }

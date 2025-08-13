@@ -58,3 +58,21 @@ func (s *AuthenticateService) Register(username, password string) (*models.UserD
 	return &dto, nil
 
 }
+
+func (s *AuthenticateService) GetProfile(token string) (*models.UserDto, error) {
+
+	userId, err := security.ParseJWT(token)
+	if err != nil {
+		return nil, fmt.Errorf("invalid token: %v", err)
+	}
+
+	var user models.User
+
+	if err := s.db.First(&user, userId).Error; err != nil {
+		return nil, fmt.Errorf("user not found: %v", err)
+	}
+
+	dto := user.ToDto()
+	return &dto, nil
+
+}

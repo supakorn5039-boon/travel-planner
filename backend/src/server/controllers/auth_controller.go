@@ -73,3 +73,26 @@ func Register(c *gin.Context) {
 		"user": user, "token": token,
 	})
 }
+
+func Getprofile(c *gin.Context) {
+
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		utils.ErrorResponse(c, "Authorization header missing", http.StatusUnauthorized)
+		return
+	}
+
+	token := authHeader
+	if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
+		token = authHeader[7:]
+	}
+
+	authService := services.NewAuthenticateService()
+	user, err := authService.GetProfile(token)
+	if err != nil {
+		utils.ErrorResponse(c, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	utils.SuccessResponse(c, user)
+}
