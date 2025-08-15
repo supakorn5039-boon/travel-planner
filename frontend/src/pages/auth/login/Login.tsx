@@ -16,16 +16,17 @@ export default function Login(): React.ReactElement {
     const { register, handleSubmit, formState } = CredentialService.useCredentialForm();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const { setUser } = useUserStore();
 
     const mutation = useMutation({
         mutationFn: CredentialService.Login,
         onSuccess: (data) => {
-            const { token, user } = data;
+            const { token } = data;
             Cookie.set('token', token!, { expires: 1 });
 
-            useUserStore.getState().setUser({
-                username: user?.username ?? '',
-                role: user?.role ?? '',
+            setUser({
+                username: data.user?.username,
+                role: data.user?.role,
             });
 
             queryClient.invalidateQueries({ queryKey: [CredentialService.QUERY_KEY] });

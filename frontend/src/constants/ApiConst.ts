@@ -3,4 +3,5 @@ export const API_ROUTES = {
     REGISTER: '/api/auth/register',
     DASHBOARD: '/api/dashboard',
     PROFILE: '/api/auth/profile',
+    DESTINATION: '/api/destination',
 };

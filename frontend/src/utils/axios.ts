@@ -1,3 +1,4 @@
+import { ROUTES } from '@/constants/RouteConst';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -18,3 +19,18 @@ fetchClient.interceptors.request.use((config) => {
     }
     return config;
 });
+
+fetchClient.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        if (error.response?.status === 401) {
+            Cookies.remove('token');
+            window.location.href = ROUTES.LOGIN;
+            return;
+        }
+
+        return Promise.reject(error);
+    }
+);

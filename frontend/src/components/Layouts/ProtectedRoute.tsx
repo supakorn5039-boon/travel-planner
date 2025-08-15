@@ -1,6 +1,6 @@
 import { ROUTES } from '@/constants/RouteConst';
-import { useAuthStore } from '@/store/features/auth/useAuthStore';
-
+import { ProfileService } from '@/services/ProfileService';
+import { useQuery } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
@@ -9,15 +9,24 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
-    const { isAuthenticated, role } = useAuthStore();
+    const { data } = useQuery({
+        queryKey: [ProfileService.QUERY_KEY],
+        queryFn: () => ProfileService.getprofile(),
+    });
 
-    if (!isAuthenticated) {
+    if (!data) {
+        return null;
+    }
+
+    if (!data.role) {
         return <Navigate to={ROUTES.LOGIN} replace />;
     }
 
-    if (!allowedRoles.includes(role)) {
+    const allowedRolesArray = typeof allowedRoles === 'string' ? [allowedRoles] : allowedRoles;
+    if (!allowedRolesArray.includes(data?.role!)) {
         return <Navigate to={ROUTES.HOME} replace />;
     }
+
     return children;
 };
 
