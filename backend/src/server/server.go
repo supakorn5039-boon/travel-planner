@@ -13,16 +13,20 @@ func WebServer(config models.ServerConfig) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	r := gin.Default()
-	r.Use(gin.Logger())
+	router := gin.Default()
 
-	applyCorsMiddleware(r)
+	applyCorsMiddleware(router)
 
-	controllers.Routes(r)
+	controllers.Routes(router)
 
-	err := r.Run(fmt.Sprintf(":%d", config.Port))
-	if err != nil {
-		return
+	port := "8080"
+	if port == "" {
+		port = fmt.Sprintf("%d", config.Port)
 	}
 
+	err := router.Run(":" + port)
+
+	if err != nil {
+		panic(err)
+	}
 }

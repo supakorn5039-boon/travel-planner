@@ -26,20 +26,14 @@ func Protected() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 
-		if authHeader == "" {
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"error": "Authorization header is missing",
+				"error": "Invalid or missing Authorization header. Expected format: 'Bearer [token]'",
 			})
+			return
 		}
 
-		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"error": "Authorization header is invalid",
-			})
-		}
-
-		tokenStr := parts[1]
+		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
 
 		token, err := security.ValidateToken(tokenStr)
 
@@ -51,8 +45,6 @@ func Protected() gin.HandlerFunc {
 		}
 
 		c.Set("user_id", token.Id)
-
 		c.Next()
-
 	}
 }
