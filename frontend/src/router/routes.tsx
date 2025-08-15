@@ -1,5 +1,6 @@
 import { ROLES } from '@/constants/RoleConst';
 import { ROUTES } from '@/constants/RouteConst';
+import MyTripIndex from '@/pages/profile/MyTripIndex';
 
 import type { TypeRoutes } from '@/types/Components';
 import { lazy } from 'react';
@@ -11,6 +12,14 @@ const HomeIndex = lazy(() => import('@/pages/home/HomeIndex'));
 const ProfileIndex = lazy(() => import('@/pages/profile/ProfileIndex'));
 const DestinationIndex = lazy(() => import('@/pages/destination/DestinationIndex'));
 
+const AboutIndex = lazy(() => import('@/pages/about/AboutIndex'));
+const TripIndex = lazy(() => import('@/pages/trip/TripIndex'));
+
+const DestinationDetail = lazy(() => import('@/pages/destination/DestinationDetail'));
+
+const Booking = lazy(() => import('@/pages/booking/Booking'));
+const PaymentIndex = lazy(() => import('@/pages/payment/PaymentIndex'));
+
 const privateRoutes: TypeRoutes[] = [
     {
         path: ROUTES.HOME,
@@ -18,7 +27,6 @@ const privateRoutes: TypeRoutes[] = [
         layout: 'default',
         allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
-
     {
         path: ROUTES.DESTINATION,
         element: <DestinationIndex />,
@@ -26,8 +34,38 @@ const privateRoutes: TypeRoutes[] = [
         allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
     {
+        path: `${ROUTES.DESTINATION}/:id`,
+        element: <DestinationDetail />,
+        layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
         path: ROUTES.PROFILE,
         element: <ProfileIndex />,
+        layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: ROUTES.TRIPS,
+        element: <TripIndex />,
+        layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: ROUTES.ABOUT,
+        element: <AboutIndex />,
+        layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: ROUTES.BOOKING,
+        element: <Booking />,
+        layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: ROUTES.MYTRIP,
+        element: <MyTripIndex />,
         layout: 'default',
         allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },

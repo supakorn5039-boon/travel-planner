@@ -20,14 +20,23 @@ func Routes(r *gin.Engine) {
 		{
 			auth.POST("/login", Login)
 			auth.POST("/register", Register)
-			auth.GET("/profile", middleware.Protected(), Getprofile)
+			auth.GET("/profile", middleware.Protected(), GetProfile)
 		}
 
 		destination := api.Group("/destination")
+		destination.Use(middleware.Protected())
 		dc := &DestinationController{service: services.NewDestinationService()}
 		{
-			destination.GET("", middleware.Protected(), dc.GetDestinations)
-			destination.GET("/:id", middleware.Protected(), dc.GetDestinationById)
+			destination.GET("", dc.GetDestinations)
+			destination.GET("/:id", dc.GetDestinationById)
+		}
+
+		mytrip := api.Group("/mytrip")
+		mytrip.Use(middleware.Protected())
+		mc := &MyTripController{service: services.NewMyTripService()}
+
+		{
+			mytrip.GET("", mc.GetMyTrips)
 		}
 	}
 

@@ -1,5 +1,4 @@
 import { API_ROUTES } from '@/constants/ApiConst';
-import { ROUTES } from '@/constants/RouteConst';
 import type { DestinationProps } from '@/types/Destination';
 import { fetchClient } from '@/utils/axios';
 
@@ -12,7 +11,7 @@ export const DestinationService = {
     },
 
     getDestinationById: async (id: number): Promise<DestinationProps> => {
-        const res = await fetchClient(`${ROUTES.DESTINATION}/${id}`);
+        const res = await fetchClient(`${API_ROUTES.DESTINATION}/${id}`);
         return res.data;
     },
 };

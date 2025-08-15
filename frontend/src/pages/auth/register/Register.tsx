@@ -78,7 +78,11 @@ export default function Register(): React.ReactElement {
 
                     <div className="text-center text-sm text-gray-600">
                         Already have an account?{' '}
-                        <Link to={ROUTES.LOGIN} className="text-green-600 hover:underline dark:text-green-400 font-medium cursor-pointer">
+                        <Link
+                            to={ROUTES.LOGIN}
+                            type="button"
+                            className="text-green-600 hover:underline dark:text-green-400 font-medium cursor-pointer"
+                        >
                             Log in here
                         </Link>
                     </div>

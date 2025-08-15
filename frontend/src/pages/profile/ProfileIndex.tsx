@@ -26,7 +26,7 @@ export default function ProfileIndex() {
                         <div className="bg-gray-100 rounded-xl p-4">
                             <FaPlaneDeparture className="mx-auto text-green-500 text-2xl mb-2" />
                             <p className="text-sm text-gray-500">Trips Taken</p>
-                            <p className="font-semibold">{data.trip}</p>
+                            <p className="font-semibold">{data.tripsCount}</p>
                         </div>
                         <div className="bg-gray-100 rounded-xl p-4">
                             <span className="mx-auto text-purple-500 text-2xl mb-2">⭐</span>

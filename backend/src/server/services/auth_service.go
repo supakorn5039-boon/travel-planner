@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"log"
 	"travel/backend/src/database"
 	"travel/backend/src/models"
 	"travel/backend/src/security"
@@ -18,34 +19,46 @@ func NewAuthenticateService() *AuthenticateService {
 }
 
 func (s *AuthenticateService) Login(username, password string) (*models.UserDto, error) {
-
 	var user models.User
 
-	if err := s.db.Where("username = ?", username).First(&user).Error; err != nil {
-		return nil, fmt.Errorf("invalid Username")
+	err := s.db.Where("username = ?", username).First(&user).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+
+			log.Printf("Login failed for username '%s': user not found", username)
+			return nil, fmt.Errorf("invalid username or password")
+		}
+
+		log.Printf("Database error during login for username '%s': %v", username, err)
+		return nil, fmt.Errorf("internal server error")
 	}
 
 	if ok := security.VerifyPassword(user.Password, password); !ok {
-		return nil, fmt.Errorf("invalid Password")
+
+		log.Printf("Login failed for username '%s': invalid password", username)
+		return nil, fmt.Errorf("invalid username or password")
 	}
 
 	dto := user.ToDto()
 	return &dto, nil
-
 }
 
 func (s *AuthenticateService) Register(username, password string) (*models.UserDto, error) {
 	var existing models.User
 
-	err := s.db.Model(&models.User{}).Where("username = ?", username).First(&existing).Error
-
+	err := s.db.Where("username = ?", username).First(&existing).Error
 	if err == nil {
 		return nil, fmt.Errorf("username already exists")
 	}
 
+	hashedPassword, err := security.HashPassword(password)
+	if err != nil {
+		return nil, fmt.Errorf("failed to hash password: %v", err)
+	}
+
 	newUser := models.User{
 		Username: username,
-		Password: password,
+		Password: hashedPassword,
 		Role:     "user",
 	}
 
@@ -54,25 +67,31 @@ func (s *AuthenticateService) Register(username, password string) (*models.UserD
 	}
 
 	dto := newUser.ToDto()
-
 	return &dto, nil
-
 }
 
 func (s *AuthenticateService) GetProfile(token string) (*models.UserDto, error) {
-
 	userId, err := security.ParseJWT(token)
 	if err != nil {
 		return nil, fmt.Errorf("invalid token: %v", err)
 	}
 
 	var user models.User
-
 	if err := s.db.First(&user, userId).Error; err != nil {
 		return nil, fmt.Errorf("user not found: %v", err)
 	}
 
-	dto := user.ToDto()
-	return &dto, nil
+	var tripsCount int64
 
+	s.db.Model(&models.Trip{}).Where("user_id = ?", userId).Count(&tripsCount)
+
+	dto := models.UserDto{
+		Id:         user.ID,
+		Username:   user.Username,
+		Role:       user.Role,
+		CreatedAt:  user.CreatedAt,
+		TripsCount: tripsCount,
+	}
+
+	return &dto, nil
 }

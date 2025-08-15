@@ -4,4 +4,5 @@ export const API_ROUTES = {
     DASHBOARD: '/api/dashboard',
     PROFILE: '/api/auth/profile',
     DESTINATION: '/api/destination',
+    MYTRIP: '/api/mytrip',
 };

@@ -7,6 +7,7 @@ type DestinationDto struct {
 	Image       string `json:"image"`
 	Country     string `json:"country"`
 	City        string `json:"city"`
+	Price       int    `json:"price"`
 }
 
 func (d *Destination) ToDto() DestinationDto {
@@ -17,5 +18,6 @@ func (d *Destination) ToDto() DestinationDto {
 		Image:       d.Image,
 		Country:     d.Country,
 		City:        d.City,
+		Price:       d.Price,
 	}
 }
