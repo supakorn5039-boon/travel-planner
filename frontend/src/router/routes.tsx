@@ -1,3 +1,4 @@
+import { ROLES } from '@/constants/RoleConst';
 import { ROUTES } from '@/constants/RouteConst';
 
 import type { TypeRoutes } from '@/types/Components';
@@ -8,25 +9,27 @@ const Register = lazy(() => import('@/pages/auth/register/Register'));
 
 const HomeIndex = lazy(() => import('@/pages/home/HomeIndex'));
 const ProfileIndex = lazy(() => import('@/pages/profile/ProfileIndex'));
-
-const DashboardIndex = lazy(() => import('@/pages/dashboard/DashboardIndex'));
+const DestinationIndex = lazy(() => import('@/pages/destination/DestinationIndex'));
 
 const privateRoutes: TypeRoutes[] = [
     {
         path: ROUTES.HOME,
         element: <HomeIndex />,
         layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
 
     {
-        path: ROUTES.DASHBOARD,
-        element: <DashboardIndex />,
+        path: ROUTES.DESTINATION,
+        element: <DestinationIndex />,
         layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
     {
         path: ROUTES.PROFILE,
         element: <ProfileIndex />,
         layout: 'default',
+        allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
 ];
 

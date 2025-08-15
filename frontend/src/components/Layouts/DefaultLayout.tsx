@@ -9,11 +9,11 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
     return (
         <App>
             <div className="relative">
-                <div className={` main-container text-black dark:text-white-dark min-h-screen`}>
+                <div className={`main-container text-black dark:text-white-dark min-h-screen`}>
                     <div className={`flex flex-col min-h-screen `}>
                         <Header />
                         <Suspense>
-                            <div className={`py-10`}>{children}</div>
+                            <div className={`pt-20 px-6`}>{children}</div>
                         </Suspense>
                         <Footer />
                         <Portals />

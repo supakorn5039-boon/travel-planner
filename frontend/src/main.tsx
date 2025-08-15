@@ -13,6 +13,7 @@ import router from './router/index';
 
 // TanStack
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SpinnerLoadingPulse } from './components/Loading/SpinLoading';
 import { ToastifyContainer } from './components/Toast/Toast';
 
 const queryClient = new QueryClient({
@@ -27,7 +28,7 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <Suspense fallback={<div className="text-center p-8">Loading...</div>}>
+        <Suspense fallback={<SpinnerLoadingPulse />}>
             <QueryClientProvider client={queryClient}>
                 <ToastifyContainer />
                 <RouterProvider router={router} future={{ v7_startTransition: true }} />

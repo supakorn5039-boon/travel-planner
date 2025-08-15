@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"travel/backend/src/server/middleware"
+	"travel/backend/src/server/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,6 +21,13 @@ func Routes(r *gin.Engine) {
 			auth.POST("/login", Login)
 			auth.POST("/register", Register)
 			auth.GET("/profile", middleware.Protected(), Getprofile)
+		}
+
+		destination := api.Group("/destination")
+		dc := &DestinationController{service: services.NewDestinationService()}
+		{
+			destination.GET("", middleware.Protected(), dc.GetDestinations)
+			destination.GET("/:id", middleware.Protected(), dc.GetDestinationById)
 		}
 	}
 

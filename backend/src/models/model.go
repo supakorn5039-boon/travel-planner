@@ -20,3 +20,12 @@ type User struct {
 	CreatedAt time.Time
 	Trip      int `gorm:"not null"`
 }
+
+type Destination struct {
+	gorm.Model
+	Title       string `gorm:"not null"`
+	Description string
+	Image       string `gorm:"not null"`
+	Country     string `gorm:"not null"`
+	City        string `gorm:"not null"`
+}
