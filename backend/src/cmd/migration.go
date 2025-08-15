@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 	"travel/backend/src/config"
 	"travel/backend/src/models"
@@ -25,10 +26,19 @@ func main() {
 	password := appConfig.Config.Database.Password
 	dbName := appConfig.Config.Database.Name
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Bangkok", host, port, user, password, dbName)
+	dbSSL := os.Getenv("DB_SSL")
+	var sslmode string
+	if dbSSL == "true" {
+		sslmode = "require"
+	} else {
+		sslmode = "disable"
+	}
+
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s TimeZone=Asia/Bangkok", host, port, user, password, dbName, sslmode)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
+
 		log.Fatalf("failed to connect database: %v", err)
 	}
 
