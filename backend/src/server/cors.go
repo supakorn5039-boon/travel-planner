@@ -9,7 +9,7 @@ import (
 
 func applyCorsMiddleware(router *gin.Engine) {
 	c := cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://localhost:5173", "https://supakorn-travel.vercel.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
