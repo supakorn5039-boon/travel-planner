@@ -40,22 +40,16 @@ func Login(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
-	var body *models.CreadentialDto
+	var body models.CreadentialDto
 
 	if err := c.ShouldBind(&body); err != nil {
 		utils.ErrorResponse(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	hashOasswird, err := security.HashPasword(body.Password)
-
-	if err != nil {
-		utils.ErrorResponse(c, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	authService := services.NewAuthenticateService()
-	user, err := authService.Register(body.Username, hashOasswird)
+
+	user, err := authService.Register(body.Username, body.Password)
 
 	if err != nil {
 		utils.ErrorResponse(c, err.Error(), http.StatusBadRequest)
@@ -74,7 +68,7 @@ func Register(c *gin.Context) {
 	})
 }
 
-func Getprofile(c *gin.Context) {
+func GetProfile(c *gin.Context) {
 
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {

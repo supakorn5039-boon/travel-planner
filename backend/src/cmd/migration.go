@@ -32,43 +32,53 @@ func main() {
 		log.Fatalf("failed to connect database: %v", err)
 	}
 
-	err = db.Migrator().DropTable(&models.User{}, &models.Destination{})
+	err = db.Migrator().DropTable(
+		&models.User{},
+		&models.Destination{},
+		&models.Trip{},
+		&models.Booking{},
+		&models.Payments{},
+	)
 	if err != nil {
 		log.Fatalf("failed to drop tables: %v", err)
 	}
 
-	if err = db.AutoMigrate(&models.User{}, &models.Destination{}); err != nil {
+	if err = db.AutoMigrate(
+		&models.User{},
+		&models.Destination{},
+		&models.Trip{},
+		&models.Booking{},
+		&models.Payments{},
+	); err != nil {
 		log.Fatalf("failed to migrate tables: %v", err)
 	}
 
 	log.Println("Migration successfully!")
 
-	hashedPassword, err := security.HashPasword("admin")
+	hashedPassword, err := security.HashPassword("admin")
 	if err != nil {
 		log.Fatalf("failed to hash password: %v", err)
 	}
 
-	mockUpUser := []models.User{
-		{
-			Username:  "admin",
-			Password:  hashedPassword,
-			Role:      "admin",
-			CreatedAt: time.Time{},
-			Trip:      0,
-		},
+	mockUpUser := models.User{
+		Username:  "admin",
+		Password:  hashedPassword,
+		Role:      "admin",
+		CreatedAt: time.Now(),
 	}
 
 	if err = db.Create(&mockUpUser).Error; err != nil {
 		log.Fatalf("failed to create mock up user: %v", err)
 	}
 
-	mockUpDestination := []models.Destination{
+	mockUpDestinations := []models.Destination{
 		{
 			Title:       "Tokyo, Japan",
 			Description: "Discover the vibrant city of Tokyo, known for its modern architecture and bustling nightlife.",
 			Image:       "https://images.squarespace-cdn.com/content/v1/64203d9600825f68e2488772/1716816992846-66PLMU3JHPHYP0O5CB3V/199A6070.jpg",
 			Country:     "Japan",
 			City:        "Tokyo",
+			Price:       1000,
 		},
 		{
 			Title:       "Zurich, Switzerland",
@@ -76,6 +86,7 @@ func main() {
 			Image:       "https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2023/11/29111159/lauterbrunnen.jpeg",
 			Country:     "Switzerland",
 			City:        "Zurich",
+			Price:       1500,
 		},
 		{
 			Title:       "Amsterdam, Netherlands",
@@ -83,11 +94,76 @@ func main() {
 			Image:       "https://media-cdn.tripadvisor.com/media/photo-m/1280/28/74/c9/cf/caption.jpg",
 			Country:     "Netherlands",
 			City:        "Amsterdam",
+			Price:       1200,
+		},
+		{
+			Title:       "Paris, France",
+			Description: "Discover the romantic city of Paris, known for its iconic Eiffel Tower and the Louvre Museum.",
+			Image:       "https://media.istockphoto.com/id/635758088/photo/sunrise-at-the-eiffel-tower-in-paris-along-the-seine.jpg?s=612x612&w=0&k=20&c=rdy3aU1CDyh66mPyR5AAc1yJ0yEameR_v2vOXp2uuMM=",
+			Country:     "France",
+			City:        "Paris",
+			Price:       1500,
+		},
+		{
+			Title:       "New York, USA",
+			Description: "Discover the bustling city of New York, known for its iconic Central Park, Times Square, and the Statue of Liberty.",
+			Image:       "https://www.learningcurve-th.com/wp-content/uploads/2015/03/New-York.jpg",
+			Country:     "USA",
+			City:        "New York",
+			Price:       2000,
+		},
+		{
+			Title:       "Sydney, Australia",
+			Description: "Discover the vibrant city of Sydney, known for its iconic Opera House, Sydney Harbour Bridge, and the Sydney Opera House.",
+			Image:       "https://www.hilton.com/im/en/NoHotel/18167842/shutterstock-523437463.jpg?impolicy=crop&cw=4200&ch=2800&gravity=NorthWest&xposition=0&yposition=0&rw=1280&rh=856",
+			Country:     "Australia",
+			City:        "Sydney",
+			Price:       1800,
 		},
 	}
 
-	if err = db.Create(&mockUpDestination).Error; err != nil {
+	if err = db.Create(&mockUpDestinations).Error; err != nil {
 		log.Fatalf("failed to create mock up destination: %v", err)
 	}
 
+	mockUpTrip := models.Trip{
+		UserId:        int(mockUpUser.ID),
+		DestinationId: int(mockUpDestinations[0].ID),
+		Title:         fmt.Sprintf("Trip to %s", mockUpDestinations[0].Title),
+		Notes:         "This is a mock trip to test the database relationship.",
+		StartDate:     time.Now(),
+		EndDate:       time.Now().AddDate(0, 0, 7),
+	}
+
+	if err = db.Create(&mockUpTrip).Error; err != nil {
+		log.Fatalf("failed to create mock trip: %v", err)
+	}
+
+	mockUpBooking := models.Booking{
+		UserId:        int(mockUpUser.ID),
+		DestinationId: int(mockUpDestinations[0].ID),
+		TripId:        int(mockUpTrip.ID),
+		TotalPrice:    mockUpDestinations[0].Price,
+		BookingDate:   time.Now(),
+		Status:        "confirmed",
+	}
+
+	if err = db.Create(&mockUpBooking).Error; err != nil {
+		log.Fatalf("failed to create mock booking: %v", err)
+	}
+
+	mockUpPayment := models.Payments{
+		UserId:        int(mockUpUser.ID),
+		BookingId:     int(mockUpBooking.ID),
+		Amount:        mockUpBooking.TotalPrice,
+		Status:        "paid",
+		PaymentMethod: "credit_card",
+		CreatedAt:     time.Now(),
+	}
+
+	if err = db.Create(&mockUpPayment).Error; err != nil {
+		log.Fatalf("failed to create mock payment: %v", err)
+	}
+
+	log.Println("Seeding complete!")
 }
