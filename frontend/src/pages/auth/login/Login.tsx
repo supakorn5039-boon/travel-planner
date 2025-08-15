@@ -93,7 +93,7 @@ export default function Login(): React.ReactElement {
 
                     <div className="text-center text-sm text-gray-600">
                         Don't have an account?{' '}
-                        <Link to="/register" className="text-blue-600 hover:underline dark:text-blue-400 font-medium cursor-pointer">
+                        <Link to="/register" type="button" className="text-blue-600 hover:underline dark:text-blue-400 font-medium cursor-pointer">
                             Register here
                         </Link>
                     </div>

@@ -2,7 +2,7 @@ import { NavItems, ROUTES } from '@/constants/RouteConst';
 import { useUserStore } from '@/store/features/user/useUserStore';
 import Cookies from 'js-cookie';
 import { CiLogout } from 'react-icons/ci';
-import { FaRegUser } from 'react-icons/fa';
+import { FaPlaneDeparture, FaRegUser } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Dropdown from '../Dropdown';
 
@@ -27,24 +27,28 @@ const Header = () => {
                 </Link>
 
                 <ul className="hidden md:flex nav-links space-x-8 font-medium">
-                    {NavItems.map((item) => (
-                        <li key={item.path}>
-                            <Link
-                                to={item.path}
-                                className={`relative transition-colors duration-200
-                                    ${location.pathname === item.path ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'}
+                    {NavItems.map((item) => {
+                        const isActive =
+                            (item.path === '/' && location.pathname === '/') || (item.path !== '/' && location.pathname.startsWith(item.path));
+                        return (
+                            <li key={item.path}>
+                                <Link
+                                    to={item.path}
+                                    className={`relative transition-colors duration-200
+                                    ${isActive ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'}
                                 `}
-                            >
-                                {item.label}
+                                >
+                                    {item.label}
 
-                                <span
-                                    className={`absolute left-0 -bottom-1 h-[2px] bg-blue-600 transition-all duration-300
-                                        ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'}
+                                    <span
+                                        className={`absolute left-0 -bottom-1 h-[2px] bg-blue-600 transition-all duration-300
+                                        ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}
                                     `}
-                                ></span>
-                            </Link>
-                        </li>
-                    ))}
+                                    ></span>
+                                </Link>
+                            </li>
+                        );
+                    })}
                 </ul>
 
                 <div className="flex items-center space-x-4">
@@ -64,6 +68,12 @@ const Header = () => {
                         }
                     >
                         <ul className="py-2 w-[180px] bg-white rounded-lg shadow-lg text-sm text-gray-700">
+                            <li className="block px-4 py-2 hover:bg-gray-100 transition-colors">
+                                <Link to={ROUTES.MYTRIP} className="flex items-center space-x-2">
+                                    <FaPlaneDeparture className="size-4 text-gray-500" />
+                                    <span>My Trip</span>
+                                </Link>
+                            </li>
                             <li className="block px-4 py-2 hover:bg-gray-100 transition-colors">
                                 <Link to={ROUTES.PROFILE} className="flex items-center space-x-2">
                                     <FaRegUser className="size-4 text-gray-500" />

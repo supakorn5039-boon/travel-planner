@@ -6,6 +6,8 @@ export const ROUTES = {
     PROFILE: '/profile',
     TRIPS: '/trips',
     ABOUT: '/about',
+    BOOKING: '/booking',
+    MYTRIP: '/mytrip',
 };
 
 export const NavItems = [

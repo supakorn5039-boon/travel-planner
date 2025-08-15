@@ -5,4 +5,5 @@ export type DestinationProps = {
     image: string;
     country: string;
     city: string;
+    price: number;
 };
