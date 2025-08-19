@@ -18,7 +18,7 @@ func Init(config *models.DatabaseConfig) {
 	dbName := config.Name
 	port := config.Port
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require TimeZone=Asia/Bangkok", host, port, user, password, dbName)
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Bangkok", host, port, user, password, dbName)
 
 	var err error
 

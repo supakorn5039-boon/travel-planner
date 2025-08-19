@@ -16,6 +16,7 @@ const Header = () => {
         useUserStore.getState().clearUser();
         navigate(ROUTES.LOGIN);
         Cookies.remove('token');
+        window.location.reload();
     };
 
     return (

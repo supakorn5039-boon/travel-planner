@@ -1,25 +1,32 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type BookingDto struct {
-	Id            uint      `json:"id"`
-	UserId        int       `json:"userId"`
-	DestinationId int       `json:"destinationId"`
-	TripId        int       `json:"tripId"`
-	TotalPrice    int       `json:"totalPrice"`
-	BookingDate   time.Time `json:"bookingDate"`
-	Status        string    `json:"status"`
+	Id               uint      `json:"id"`
+	DestinationId    int       `json:"destinationId" binding:"required"`
+	DestinationTitle string    `json:"destinationTitle"`
+	StartDate        time.Time `json:"startDate" binding:"required"`
+	EndDate          time.Time `json:"endDate" binding:"required"`
 }
 
-func (b *Booking) ToDto() BookingDto {
-	return BookingDto{
-		Id:            b.ID,
-		UserId:        b.UserId,
-		DestinationId: b.DestinationId,
-		TripId:        b.TripId,
-		TotalPrice:    b.TotalPrice,
-		BookingDate:   b.BookingDate,
-		Status:        b.Status,
+func (b *Booking) ToDto() *BookingDto {
+	var destination *Destination
+	if b.Destination != nil {
+		destination = b.Destination
+	} else {
+		destination = &Destination{
+			Title: "Unknown",
+		}
+	}
+
+	return &BookingDto{
+		Id:               b.ID,
+		DestinationId:    b.DestinationId,
+		DestinationTitle: destination.Title,
+		StartDate:        b.StartDate,
+		EndDate:          b.EndDate,
 	}
 }

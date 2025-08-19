@@ -45,9 +45,7 @@ func main() {
 	err = db.Migrator().DropTable(
 		&models.User{},
 		&models.Destination{},
-		&models.Trip{},
 		&models.Booking{},
-		&models.Payments{},
 	)
 	if err != nil {
 		log.Fatalf("failed to drop tables: %v", err)
@@ -56,9 +54,7 @@ func main() {
 	if err = db.AutoMigrate(
 		&models.User{},
 		&models.Destination{},
-		&models.Trip{},
 		&models.Booking{},
-		&models.Payments{},
 	); err != nil {
 		log.Fatalf("failed to migrate tables: %v", err)
 	}
@@ -136,43 +132,23 @@ func main() {
 		log.Fatalf("failed to create mock up destination: %v", err)
 	}
 
-	mockUpTrip := models.Trip{
-		UserId:        int(mockUpUser.ID),
-		DestinationId: int(mockUpDestinations[0].ID),
-		Title:         fmt.Sprintf("Trip to %s", mockUpDestinations[0].Title),
-		Notes:         "This is a mock trip to test the database relationship.",
-		StartDate:     time.Now(),
-		EndDate:       time.Now().AddDate(0, 0, 7),
-	}
-
-	if err = db.Create(&mockUpTrip).Error; err != nil {
-		log.Fatalf("failed to create mock trip: %v", err)
-	}
-
-	mockUpBooking := models.Booking{
-		UserId:        int(mockUpUser.ID),
-		DestinationId: int(mockUpDestinations[0].ID),
-		TripId:        int(mockUpTrip.ID),
-		TotalPrice:    mockUpDestinations[0].Price,
-		BookingDate:   time.Now(),
-		Status:        "confirmed",
+	mockUpBooking := []models.Booking{
+		{
+			UserId:        int(mockUpUser.ID),
+			DestinationId: int(mockUpDestinations[0].ID),
+			StartDate:     time.Now(),
+			EndDate:       time.Now().AddDate(0, 0, 7),
+		},
+		{
+			UserId:        int(mockUpUser.ID),
+			DestinationId: int(mockUpDestinations[1].ID),
+			StartDate:     time.Now(),
+			EndDate:       time.Now().AddDate(0, 0, 7),
+		},
 	}
 
 	if err = db.Create(&mockUpBooking).Error; err != nil {
 		log.Fatalf("failed to create mock booking: %v", err)
-	}
-
-	mockUpPayment := models.Payments{
-		UserId:        int(mockUpUser.ID),
-		BookingId:     int(mockUpBooking.ID),
-		Amount:        mockUpBooking.TotalPrice,
-		Status:        "paid",
-		PaymentMethod: "credit_card",
-		CreatedAt:     time.Now(),
-	}
-
-	if err = db.Create(&mockUpPayment).Error; err != nil {
-		log.Fatalf("failed to create mock payment: %v", err)
 	}
 
 	log.Println("Seeding complete!")

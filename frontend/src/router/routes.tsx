@@ -13,12 +13,8 @@ const ProfileIndex = lazy(() => import('@/pages/profile/ProfileIndex'));
 const DestinationIndex = lazy(() => import('@/pages/destination/DestinationIndex'));
 
 const AboutIndex = lazy(() => import('@/pages/about/AboutIndex'));
-const TripIndex = lazy(() => import('@/pages/trip/TripIndex'));
 
-const DestinationDetail = lazy(() => import('@/pages/destination/DestinationDetail'));
-
-const Booking = lazy(() => import('@/pages/booking/Booking'));
-const PaymentIndex = lazy(() => import('@/pages/payment/PaymentIndex'));
+const BookingDestination = lazy(() => import('@/pages/destination/BookingDestination'));
 
 const privateRoutes: TypeRoutes[] = [
     {
@@ -35,7 +31,7 @@ const privateRoutes: TypeRoutes[] = [
     },
     {
         path: `${ROUTES.DESTINATION}/:id`,
-        element: <DestinationDetail />,
+        element: <BookingDestination />,
         layout: 'default',
         allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
@@ -45,24 +41,14 @@ const privateRoutes: TypeRoutes[] = [
         layout: 'default',
         allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
-    {
-        path: ROUTES.TRIPS,
-        element: <TripIndex />,
-        layout: 'default',
-        allowedRoles: [ROLES.USER, ROLES.ADMIN],
-    },
+
     {
         path: ROUTES.ABOUT,
         element: <AboutIndex />,
         layout: 'default',
         allowedRoles: [ROLES.USER, ROLES.ADMIN],
     },
-    {
-        path: ROUTES.BOOKING,
-        element: <Booking />,
-        layout: 'default',
-        allowedRoles: [ROLES.USER, ROLES.ADMIN],
-    },
+
     {
         path: ROUTES.MYTRIP,
         element: <MyTripIndex />,

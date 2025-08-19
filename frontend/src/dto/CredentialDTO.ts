@@ -10,7 +10,6 @@ const CredentialSchema = z.object({
 export type CredentialSchemaProps = z.infer<typeof CredentialSchema>;
 
 export const CredentialDefaultValue: CredentialSchemaProps = {
-    //! Test
     username: '',
     password: '',
 };
