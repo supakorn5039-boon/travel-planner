@@ -4,15 +4,12 @@ export const ROUTES = {
     REGISTER: '/register',
     DESTINATION: '/destinations',
     PROFILE: '/profile',
-    TRIPS: '/trips',
     ABOUT: '/about',
-    BOOKING: '/booking',
     MYTRIP: '/mytrip',
 };
 
 export const NavItems = [
     { label: 'Home', path: ROUTES.HOME },
     { label: 'Destinations', path: ROUTES.DESTINATION },
-    { label: 'Trips', path: ROUTES.TRIPS },
     { label: 'About', path: ROUTES.ABOUT },
 ];

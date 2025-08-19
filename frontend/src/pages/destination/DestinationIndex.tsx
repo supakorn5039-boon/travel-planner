@@ -4,8 +4,6 @@ import { DestinationService } from '@/services/DestinationService';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { CiSearch } from 'react-icons/ci';
-import { FaLocationArrow } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 export default function DestinationPage() {
@@ -39,35 +37,6 @@ export default function DestinationPage() {
                     <p className="text-lg sm:text-xl text-gray-200 drop-shadow-sm mb-8">
                         Search for a destination and book your unforgettable journey.
                     </p>
-
-                    <form
-                        onSubmit={handleSearch}
-                        className="bg-white/90 backdrop-blur-sm p-4 sm:p-6 rounded-3xl shadow-2xl w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4"
-                    >
-                        <div className="flex items-center space-x-3 w-full md:w-2/5">
-                            <FaLocationArrow color="#3b82f6" />
-                            <input
-                                type="text"
-                                placeholder="Destination"
-                                className="flex-1 p-2 outline-none rounded-lg bg-transparent"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </div>
-                        <div className="flex items-center space-x-3 w-full md:w-2/5 cursor-pointer">
-                            <input type="date" placeholder="Dates" className="flex-1 p-2 outline-none rounded-lg bg-transparent" />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="w-full md:w-1/5 bg-blue-600 text-white py-3 rounded-2xl shadow-md font-bold hover:bg-blue-700 transition-colors duration-300"
-                        >
-                            <span className="flex items-center justify-center space-x-2">
-                                <CiSearch size={20} />
-                                <span>Search</span>
-                            </span>
-                        </button>
-                    </form>
                 </div>
             </div>
 
