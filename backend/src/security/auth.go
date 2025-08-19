@@ -15,7 +15,7 @@ var (
 )
 
 func GenerateJWT(id uint) (string, error) {
-	expirationTime := time.Now().Add(3 * 24 * time.Hour)
+	expirationTime := time.Now().Add(1 * 24 * time.Hour)
 	claims := &models.Claims{
 		Id: id,
 		RegisteredClaims: jwt.RegisteredClaims{

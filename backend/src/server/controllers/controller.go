@@ -30,14 +30,14 @@ func Routes(r *gin.Engine) {
 			destination.GET("", dc.GetDestinations)
 			destination.GET("/:id", dc.GetDestinationById)
 		}
-
-		mytrip := api.Group("/mytrip")
-		mytrip.Use(middleware.Protected())
-		mc := &MyTripController{service: services.NewMyTripService()}
-
+		booking := api.Group("/booking")
+		booking.Use(middleware.Protected())
+		bc := &BookingController{service: services.NewBookingService()}
 		{
-			mytrip.GET("", mc.GetMyTrips)
+			booking.POST("", bc.CreateBooking)
+			booking.GET("", bc.GetBookingsByUserId)
 		}
+
 	}
 
 	r.NoRoute(func(c *gin.Context) {

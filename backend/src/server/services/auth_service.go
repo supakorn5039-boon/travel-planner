@@ -81,16 +81,16 @@ func (s *AuthenticateService) GetProfile(token string) (*models.UserDto, error) 
 		return nil, fmt.Errorf("user not found: %v", err)
 	}
 
-	var tripsCount int64
+	var bookingCounts int64
 
-	s.db.Model(&models.Trip{}).Where("user_id = ?", userId).Count(&tripsCount)
+	s.db.Model(&models.Booking{}).Where("user_id = ?", userId).Count(&bookingCounts)
 
 	dto := models.UserDto{
 		Id:         user.ID,
 		Username:   user.Username,
 		Role:       user.Role,
 		CreatedAt:  user.CreatedAt,
-		TripsCount: tripsCount,
+		TripsCount: bookingCounts,
 	}
 
 	return &dto, nil
